@@ -2,7 +2,7 @@ from base import app, api, History, history_schema,  q, Resource, Flask, request
 
 
 class ClinicalHistoryResource(Resource):
-    def get(self, consolidado_id):
+    def get(self, numero_historia):
         obj = ClinicalHistory.query.get_or_404(numero_historia)
         return history_schema.dump(obj)
 
