@@ -13,7 +13,6 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 api = Api(app)
 
-# db 2 cola para pagos
 q = Queue(connection=Redis(host='redis', port=6379, db=2))
 
 
