@@ -52,7 +52,14 @@ services:
     command: sh run_commands.sh
     depends_on: 
       - redis
-
+  clinical_history-queries:
+    volumes:
+        - ./clinical_history/:/mnt/
+    build: ./clinical_history
+    working_dir: /backend/
+    command: sh run_queries.sh
+    depends_on: 
+      - redis
   nginx:
     image: nginx:latest
     ports:

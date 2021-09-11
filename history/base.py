@@ -8,7 +8,7 @@ from rq import Queue
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/pago.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/history.db'
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 api = Api(app)
