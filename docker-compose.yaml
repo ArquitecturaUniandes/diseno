@@ -36,6 +36,14 @@ services:
     command: rq worker -u 'redis://redis/0'
     depends_on:
       - redis  
+  pago-commands:
+    volumes:
+        - ./pago/:/mnt/
+    build: ./pago
+    working_dir: /backend/
+    command: sh run_commands.sh
+    depends_on: 
+      - redis
 
   nginx:
     image: nginx:latest
@@ -48,3 +56,4 @@ services:
         - reporte_consolidado_paciente-queries
         - reporte_consolidado_paciente-commands
         - worker-reporte_consolidado_paciente
+        - pago-commands
