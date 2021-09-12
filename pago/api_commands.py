@@ -21,5 +21,13 @@ class PagosResource(Resource):
 # este endpoint es solo de prueba para hacer que el integrado inicie el pago de un cliente
 api.add_resource(PagosResource, '/api-commands/pago')
 
+
+class EstadoDeSaludResource(Resource):
+    def get(self):
+        '{"estado": "ok"}', 200
+
+api.add_resource(EstadoDeSaludResource, '/estado-de-salud')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

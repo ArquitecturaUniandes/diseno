@@ -4,5 +4,5 @@ RUN mkdir /backend
 WORKDIR /backend
 ADD requirements.txt /backend/
 RUN pip install -r requirements.txt
-COPY * /backend/
+#COPY * /backend/
 EXPOSE 5000
