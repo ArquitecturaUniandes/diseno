@@ -45,6 +45,15 @@ services:
     depends_on: 
       - redis
 
+  calculador-commands:
+    volumes:
+        - ./calculador/:/mnt/
+    build: ./calculador
+    working_dir: /backend/
+    command: sh run_commands.sh
+    depends_on: 
+      - redis 
+
   nginx:
     image: nginx:latest
     ports:

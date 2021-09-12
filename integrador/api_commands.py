@@ -7,8 +7,8 @@ class SincronizarDatosResource(Resource):
         cita_id = request.json['cita_id']
         # TODO: aqui inicia proceso de consolidado
         # llama a servicios externos y graba en InformacionExternaConsolidada
-        #data = InformacionExternaConsolidada.query.get_or_404(cita_id=cita_id)
-        data = {}
+        data = InformacionExternaConsolidada.query.get_or_404(cita_id)
+        # data = [{"cita_id":1},{"cita_id":2},{"cita_id":3}]
 
         q.enqueue(update_reporte_consolidado, informacion_consolidada_schema.dump(data))
         return {'Sincronizando': True}
