@@ -5,7 +5,8 @@ __pycache__/
 
 # C extensions
 *.so
-
+*.rdb
+*logs/
 # Distribution / packaging
 .Python
 build/

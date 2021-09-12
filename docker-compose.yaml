@@ -6,7 +6,7 @@ services:
       - ./data:/data
   integrador-commands:
     volumes:
-        - ./integrador/:/mnt/
+        - ./integrador/:/backend/
     build: ./integrador
     working_dir: /backend/
     command: sh run_commands.sh
@@ -14,7 +14,7 @@ services:
       - redis
   reporte_consolidado_paciente-queries:
     volumes:
-        - ./reporte_consolidado_paciente/:/mnt/
+        - ./reporte_consolidado_paciente/:/backend/
     build: ./reporte_consolidado_paciente
     working_dir: /backend/
     command: sh run_queries.sh
@@ -22,7 +22,7 @@ services:
       - redis
   reporte_consolidado_paciente-commands:
     volumes:
-        - ./reporte_consolidado_paciente/:/mnt/
+        - ./reporte_consolidado_paciente/:/backend/
     build: ./reporte_consolidado_paciente
     working_dir: /backend/
     command: sh run_commands.sh
@@ -30,7 +30,7 @@ services:
       - redis  
   worker-reporte_consolidado_paciente:
     volumes:
-      - ./reporte_consolidado_paciente/:/mnt/
+      - ./reporte_consolidado_paciente/:/backend/
     build: ./reporte_consolidado_paciente
     working_dir: /backend/
     command: rq worker -u 'redis://redis/0'
@@ -38,7 +38,7 @@ services:
       - redis  
   pago-commands:
     volumes:
-        - ./pago/:/mnt/
+        - ./pago/:/backend/
     build: ./pago
     working_dir: /backend/
     command: sh run_commands.sh
@@ -47,7 +47,7 @@ services:
 
   calculador-commands:
     volumes:
-        - ./calculador/:/mnt/
+        - ./calculador/:/backend/
     build: ./calculador
     working_dir: /backend/
     command: sh run_commands.sh
@@ -56,7 +56,7 @@ services:
 
   clinical_history-commands:
     volumes:
-        - ./history/:/mnt/
+        - ./history/:/backend/
     build: ./history
     working_dir: /backend/
     command: sh run_commands.sh
@@ -64,12 +64,21 @@ services:
       - redis
   clinical_history-queries:
     volumes:
-        - ./history/:/mnt/
+        - ./history/:/backend/
     build: ./history
     working_dir: /backend/
     command: sh run_queries.sh
     depends_on:
       - redis
+  monitor:
+    volumes:
+      - ./monitor:/backend
+    working_dir: /backend/
+    build: ./monitor
+    command: sh run.sh
+    depends_on:
+      - nginx
+
   nginx:
     image: nginx:latest
     ports:

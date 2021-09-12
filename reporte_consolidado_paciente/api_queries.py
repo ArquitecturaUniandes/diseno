@@ -10,5 +10,12 @@ class ReporteConsolidadoResource(Resource):
 api.add_resource(ReporteConsolidadoResource, '/api-queries/reporte-consolidado/<int:consolidado_id>')
 
 
+class EstadoDeSaludResource(Resource):
+    def get(self):
+        '{"estado": "ok"}', 200
+
+api.add_resource(EstadoDeSaludResource, '/estado-de-salud')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
