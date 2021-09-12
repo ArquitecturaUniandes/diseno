@@ -51,9 +51,25 @@ services:
     build: ./calculador
     working_dir: /backend/
     command: sh run_commands.sh
-    depends_on: 
-      - redis 
+    depends_on:
+      - redis
 
+  clinical_history-commands:
+    volumes:
+        - ./history/:/mnt/
+    build: ./history
+    working_dir: /backend/
+    command: sh run_commands.sh
+    depends_on:
+      - redis
+  clinical_history-queries:
+    volumes:
+        - ./history/:/mnt/
+    build: ./history
+    working_dir: /backend/
+    command: sh run_queries.sh
+    depends_on:
+      - redis
   nginx:
     image: nginx:latest
     ports:
