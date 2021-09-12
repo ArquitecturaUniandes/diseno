@@ -18,7 +18,7 @@ class ClinicalHistoryResource(Resource):
             "recomendaciones_usuario": request.json['recomendaciones_usuario'],
         }
 
-        q.enqueue(history_user_data, history_schema.dump(data))
+        q.enqueue(history_user_update, history_schema.dump(data))
         return {'ClinicalHistory': True}
 
 # testing endpoint
