@@ -6,4 +6,3 @@ SQLAlchemy
 marshmallow-sqlalchemy
 redis
 rq
-requests
