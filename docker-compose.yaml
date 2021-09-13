@@ -2,8 +2,8 @@ version: "3.2"
 services:
   redis:
     image: redis
-    volumes: 
-      - ./data:/data
+    #volumes: 
+    #  - ./data:/data
   integrador-commands:
     volumes:
         - ./integrador/:/backend/

@@ -131,3 +131,4 @@ dmypy.json
 .docker*
 # db files
 *.db
+.idea/
