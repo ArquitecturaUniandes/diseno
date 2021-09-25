@@ -20,3 +20,5 @@ kaleido==0.2.1
 redis
 rq
 requests
+flask-jwt-extended
+pyopenssl

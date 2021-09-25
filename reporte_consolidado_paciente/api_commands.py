@@ -1,9 +1,14 @@
 from base import app, api, ma, db, ReporteConsolidado, reporte_consolidado_schema, Resource, Flask, request
 import requests
 import json
+#from flask_jwt_extended import jwt_required
+from permissions import funcionario_required
+
 
 class ReporteConsolidadoResource(Resource):
+    @funcionario_required()
     def post(self):
+        print('###############ReporteConsolidadoResource')
         monto_examen_a = 1000
         monto_examen_b = 2000
         monto_examen_c = 3000
@@ -41,12 +46,16 @@ class ReporteConsolidadoResource(Resource):
         #     "referencia": "cliente numero 1",
         #     "monto_a_cancelar": 1000
         # }
-        calculo_de_pagos_a = requests.post('http://calculador-commands:5000/api-commands/calculador',json=calculo_examen_a)
-        confirmacion_de_pagos_a = requests.post('http://pago-commands:5000/api-commands/pago',json=pago_examen_a)
-        calculo_de_pagos_b = requests.post('http://calculador-commands:5000/api-commands/calculador',json=calculo_examen_b)
-        confirmacion_de_pagos_b = requests.post('http://pago-commands:5000/api-commands/pago',json=pago_examen_b)
-        calculo_de_pagos_c = requests.post('http://calculador-commands:5000/api-commands/calculador',json=calculo_examen_c)
-        confirmacion_de_pagos_c = requests.post('http://pago-commands:5000/api-commands/pago',json=pago_examen_c)
+        token = requests.get(f"https://jwt-queries:5000/api-queries/jwt?type=funcionario", verify=False)
+        token = token.json()
+        headers = {'Authorization': f"Bearer {token['access_token']}"}
+
+        calculo_de_pagos_a = requests.post('https://calculador-commands:5000/api-commands/calculador', headers=headers, json=calculo_examen_a, verify=False)
+        confirmacion_de_pagos_a = requests.post('https://pago-commands:5000/api-commands/pago', headers=headers, json=pago_examen_a, verify=False)
+        calculo_de_pagos_b = requests.post('https://calculador-commands:5000/api-commands/calculador', headers=headers, json=calculo_examen_b, verify=False)
+        confirmacion_de_pagos_b = requests.post('https://pago-commands:5000/api-commands/pago', headers=headers, json=pago_examen_b, verify=False)
+        calculo_de_pagos_c = requests.post('https://calculador-commands:5000/api-commands/calculador', headers=headers, json=calculo_examen_c, verify=False)
+        confirmacion_de_pagos_c = requests.post('https://pago-commands:5000/api-commands/pago', headers=headers, json=pago_examen_c, verify=False)
         if confirmacion_de_pagos_a.status_code != 200:
             return {"pago": "no se pudo procesar confirmacion de pago a"}, 400
         if confirmacion_de_pagos_b.status_code != 200:
@@ -71,4 +80,4 @@ api.add_resource(EstadoDeSaludResource, '/estado-de-salud')
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', ssl_context='adhoc')
