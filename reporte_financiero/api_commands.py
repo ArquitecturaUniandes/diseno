@@ -10,9 +10,12 @@ from plotly.offline import iplot
 from sklearn.neighbors import KNeighborsClassifier
 from joblib import dump, load
 from base import app, q
+from flask_jwt_extended import jwt_required
+from permissions import contador_required
 
 
 @app.route('/api-commands/reporte-financiero', methods=['POST'])
+@contador_required()
 def hello_world():
     balance_input = request.form['balance_input']
     balance_input = int(balance_input)
@@ -64,4 +67,4 @@ def verificar_salud():
 
 # entrypoint
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', ssl_context='adhoc')

@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, make_response
 from joblib import load
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -10,12 +10,20 @@ from plotly.offline import iplot
 from sklearn.neighbors import KNeighborsClassifier
 from joblib import dump, load
 from base import app, q
-
+from flask_jwt_extended import jwt_required
+from permissions import funcionario_required
+import requests
 
 
 @app.route('/api-queries/reporte-financiero', methods=['GET'])
+@funcionario_required()
 def hello_world():
-    return render_template('output.html', href = '/static/default_output_image_results.svg')
+    token = requests.get(f"https://jwt-queries:5000/api-queries/jwt?type=contador", verify=False)
+    token = token.json()
+    #headers = {'Authorization': f"Bearer {token['access_token']}"}
+    resp = make_response(render_template('output.html', href = '/static/default_output_image_results.svg'))
+    resp.set_cookie('access_token_cookie', token['access_token'])
+    return resp
 
 
 def make_picture(*args):
@@ -55,4 +63,4 @@ def verificar_salud():
 
 # entrypoint
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', ssl_context='adhoc')
