@@ -1,3 +1,4 @@
+import os
 import datetime
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
@@ -5,12 +6,16 @@ from flask_marshmallow import Marshmallow
 from flask_restful import Api, Resource
 from redis import Redis
 from rq import Queue
+from flask_jwt_extended import JWTManager
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/pago.db'
+app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY', "secret-jwt")
+
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+jwt = JWTManager(app)
 api = Api(app)
 
 # db 2 cola para pagos

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-# asyncq.py
-
+import logging
 import asyncio
 import itertools as it
 import os
@@ -13,6 +12,7 @@ import requests
 from base import Servicio
 
 
+logger = logging.getLogger(__file__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CODIGO_FALLA_CONEXION = 550
 CODIGO_FALLA_INESPERADA = 999
@@ -41,7 +41,7 @@ async def verificar_salud_microservicios() -> None:
         response = None
         tiempo_inicio_monitoreo = time.perf_counter()
         try:
-            response = requests.get(f"http://{servicio.name}:5000/{servicio.health_check_uri}")
+            response = requests.get(f"https://{servicio.name}:5000/{servicio.health_check_uri}", verify=False)
             if response.status_code == 200:
                 print("\033[36m" + f"Monitor verifico la salud de {servicio.name} con status_code {response.status_code}, Estado Correcto!")
                 await escribe_log_monitoreo(servicio, tiempo_inicio_monitoreo, response.status_code)
@@ -55,6 +55,7 @@ async def verificar_salud_microservicios() -> None:
                 print("\033[36m" + f"Monitor verifico la salud de {servicio.name} con status_code {response.status_code}, Estado con fallas!")
                 await escribe_log_monitoreo(servicio, tiempo_inicio_monitoreo, response.status_code)
             else:
+                print(str(err))
                 await escribe_log_monitoreo(servicio, tiempo_inicio_monitoreo, CODIGO_FALLA_CONEXION)
         except Exception:
             traceback.print_exc()
