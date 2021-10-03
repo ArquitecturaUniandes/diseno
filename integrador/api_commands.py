@@ -1,8 +1,10 @@
 from base import app, api, InformacionExternaConsolidada, informacion_consolidada_schema,  q, Resource, Flask, request
 from updater import update_reporte_consolidado
+from flask_jwt_extended import jwt_required
 
 
 class SincronizarDatosResource(Resource):
+    @jwt_required()
     def post(self):
         cita_id = request.json['cita_id']
         # TODO: aqui inicia proceso de consolidado
@@ -25,4 +27,4 @@ api.add_resource(EstadoDeSaludResource, '/estado-de-salud')
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', ssl_context='adhoc')

@@ -1,8 +1,11 @@
 from base import app, api, Pago, pago_schema,  q, Resource, Flask, request
 from payment_processor import realizar_pago
+from flask_jwt_extended import jwt_required
+from permissions import funcionario_required
 
 
 class PagosResource(Resource):
+    @funcionario_required()
     def post(self):
         # TODO: aqui inicia proceso de pago
         # realiza el pago, 
@@ -30,4 +33,4 @@ api.add_resource(EstadoDeSaludResource, '/estado-de-salud')
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', ssl_context='adhoc')

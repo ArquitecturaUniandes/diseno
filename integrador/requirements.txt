@@ -6,3 +6,5 @@ SQLAlchemy
 marshmallow-sqlalchemy
 redis
 rq
+flask-jwt-extended
+pyopenssl
